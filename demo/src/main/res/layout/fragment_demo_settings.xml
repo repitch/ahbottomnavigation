@@ -29,4 +29,10 @@
         android:checked="false"
         android:text="Show selected background" />
 
+    <android.support.v7.widget.SwitchCompat
+        android:id="@+id/fragment_demo_force_title_hide"
+        style="@style/setting"
+        android:checked="false"
+        android:text="Force title hide" />
+
 </LinearLayout>

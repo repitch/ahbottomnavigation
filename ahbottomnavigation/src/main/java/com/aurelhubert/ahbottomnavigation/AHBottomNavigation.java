@@ -32,8 +32,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.aurelhubert.ahbottomnavigation.notification.Notification;
-import com.aurelhubert.ahbottomnavigation.notification.NotificationHelper;
+import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
+import com.aurelhubert.ahbottomnavigation.notification.AHNotificationHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +70,7 @@ public class AHBottomNavigation extends FrameLayout {
 	private boolean colored = false;
 	private boolean selectedBackgroundVisible = false;
 	private boolean isHidden = false;
-	private List<Notification> notifications = Notification.generateEmptyList(MAX_ITEMS);
+	private List<AHNotification> notifications = AHNotification.generateEmptyList(MAX_ITEMS);
 	private boolean isBehaviorTranslationSet = false;
 	private int currentItem = 0;
 	private int currentColor = 0;
@@ -105,6 +105,7 @@ public class AHBottomNavigation extends FrameLayout {
 	private float selectedItemWidth, notSelectedItemWidth;
 	private boolean forceTint = false;
 	private boolean forceTitlesDisplay = false;
+    private boolean forceTitlesHide = false;
 
 	// Notifications
 	private
@@ -249,7 +250,7 @@ public class AHBottomNavigation extends FrameLayout {
 		LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, layoutHeight);
 		addView(linearLayout, layoutParams);
 
-		if (items.size() <= MIN_ITEMS || forceTitlesDisplay) {
+		if (isClassic()) {
 			createClassicItems(linearLayout);
 		} else {
 			createSmallItems(linearLayout);
@@ -263,6 +264,15 @@ public class AHBottomNavigation extends FrameLayout {
 			}
 		});
 	}
+
+    /**
+     * Check if items must be classic
+     *
+     * @return true if classic (icon + title)
+     */
+    private boolean isClassic() {
+        return forceTitlesDisplay || items.size() <= MIN_ITEMS && !forceTitlesHide;
+    }
 
 	/**
 	 * Create classic items (only 3 items in the bottom navigation)
@@ -786,9 +796,9 @@ public class AHBottomNavigation extends FrameLayout {
 				continue;
 			}
 
-			final Notification notificationItem = notifications.get(i);
-			final int currentTextColor = NotificationHelper.getTextColor(notificationItem, notificationTextColor);
-			final int currentBackgroundColor = NotificationHelper.getBackgroundColor(notificationItem, notificationBackgroundColor);
+			final AHNotification notificationItem = notifications.get(i);
+			final int currentTextColor = AHNotificationHelper.getTextColor(notificationItem, notificationTextColor);
+			final int currentBackgroundColor = AHNotificationHelper.getBackgroundColor(notificationItem, notificationBackgroundColor);
 
 			TextView notification = (TextView) views.get(i).findViewById(R.id.bottom_navigation_notification);
 
@@ -1083,7 +1093,7 @@ public class AHBottomNavigation extends FrameLayout {
 			return;
 		}
 
-		if (items.size() == MIN_ITEMS || forceTitlesDisplay) {
+		if (isClassic()) {
 			updateItems(position, useCallback);
 		} else {
 			updateSmallItems(position, useCallback);
@@ -1220,6 +1230,26 @@ public class AHBottomNavigation extends FrameLayout {
 		createItems();
 	}
 
+    /**
+     * Return if we force the titles to be hidden
+     *
+     * @return Boolean
+     */
+    public boolean isForceTitlesHide() {
+        return forceTitlesHide;
+    }
+
+    /**
+     * Force the titles to be hidden (don't use the classic behavior)
+     * Note: Against Material Design guidelines
+     *
+     * @param forceTitlesHide Boolean
+     */
+    public void setForceTitlesHide(boolean forceTitlesHide) {
+        this.forceTitlesHide = forceTitlesHide;
+        createItems();
+    }
+
 	/**
 	 * Set AHOnTabSelectedListener
 	 */
@@ -1266,12 +1296,12 @@ public class AHBottomNavigation extends FrameLayout {
             throw new IndexOutOfBoundsException(String.format(Locale.US, EXCEPTION_INDEX_OUT_OF_BOUNDS, itemPosition, items.size()));
 		}
         final String title = nbNotification == 0 ? "" : String.valueOf(nbNotification);
-        notifications.set(itemPosition, Notification.justText(title));
+        notifications.set(itemPosition, AHNotification.justText(title));
 		updateNotifications(false, itemPosition);
 	}
 
 	/**
-	 * Set Notification text
+	 * Set notification text
 	 *
 	 * @param title        String
 	 * @param itemPosition int
@@ -1280,20 +1310,23 @@ public class AHBottomNavigation extends FrameLayout {
         if (itemPosition < 0 || itemPosition > items.size() - 1) {
             throw new IndexOutOfBoundsException(String.format(Locale.US, EXCEPTION_INDEX_OUT_OF_BOUNDS, itemPosition, items.size()));
         }
-        notifications.set(itemPosition, Notification.justText(title));
+        notifications.set(itemPosition, AHNotification.justText(title));
         updateNotifications(false, itemPosition);
     }
 
     /**
      * Set fully customized Notification
      *
-     * @param notification Notification
+     * @param notification AHNotification
      * @param itemPosition int
      */
-	public void setNotification(Notification notification, int itemPosition) {
+	public void setNotification(AHNotification notification, int itemPosition) {
 		if (itemPosition < 0 || itemPosition > items.size() - 1) {
             throw new IndexOutOfBoundsException(String.format(Locale.US, EXCEPTION_INDEX_OUT_OF_BOUNDS, itemPosition, items.size()));
 		}
+        if (notification == null) {
+            notification = new AHNotification(); // instead of null, use empty notification
+        }
 		notifications.set(itemPosition, notification);
 		updateNotifications(true, itemPosition);
 	}

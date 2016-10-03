@@ -1,6 +1,13 @@
 ## Changelog
 
-### Newest version: 1.4.0
+### Newest version: 1.5.0
+
+* Added AHNotification class to manage easily the style of each notification (PR #156) (**old method still works**)
+* Added `setForceTitlesHide(boolean forceTitlesHide)` to force the titles to be hidden (when 3 or less items are displayed)
+* Updated `buildToolsVersion` to version `24.0.2`
+* Updated `'com.android.support:design:24.2.1'`
+
+### 1.4.0
 
 * Added `isHidden()` method.
 * Added `setDefaultBackgroundResource(@DrawableRes int defaultBackgroundResource)`

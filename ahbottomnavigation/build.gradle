@@ -13,7 +13,7 @@ ext {
     siteUrl = 'https://github.com/aurelhubert/ahbottomnavigation'
     gitUrl = 'https://github.com/aurelhubert/ahbottomnavigation.git'
 
-    libraryVersion = '1.4.0'
+    libraryVersion = '1.5.0'
 
     developerId = 'aurelhubert'
     developerName = 'Aurelien Hubert'
@@ -26,13 +26,13 @@ ext {
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.0"
+    buildToolsVersion "24.0.2"
 
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 24
-        versionCode 34
-        versionName "1.4.0"
+        versionCode 35
+        versionName "1.5.0"
     }
     buildTypes {
         release {
@@ -43,7 +43,7 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:design:24.0.0'
+    compile 'com.android.support:design:24.2.1'
 }
 
 // Place it at the end of the file

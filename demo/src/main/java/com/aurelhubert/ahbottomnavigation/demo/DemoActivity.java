@@ -16,7 +16,7 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationViewPager;
-import com.aurelhubert.ahbottomnavigation.notification.Notification;
+import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 
 import java.util.ArrayList;
 
@@ -179,7 +179,7 @@ public class DemoActivity extends AppCompatActivity {
 			@Override
 			public void run() {
 				// Setting custom colors for notification
-				Notification notification = Notification.newBuilder()
+				AHNotification notification = new AHNotification.Builder()
 						.setText(":)")
 						.setBackgroundColor(ContextCompat.getColor(DemoActivity.this, R.color.color_notification_back))
 						.setTextColor(ContextCompat.getColor(DemoActivity.this, R.color.color_notification_text))
@@ -257,6 +257,13 @@ public class DemoActivity extends AppCompatActivity {
 	 */
 	public void updateSelectedBackgroundVisibility(boolean isVisible) {
 		bottomNavigation.setSelectedBackgroundVisible(isVisible);
+	}
+
+	/**
+	 * Show or hide selected item background
+	 */
+	public void setForceTitleHide(boolean forceTitleHide) {
+		bottomNavigation.setForceTitlesHide(forceTitleHide);
 	}
 
 	/**

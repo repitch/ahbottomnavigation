@@ -5,11 +5,12 @@ Library to implement the Bottom Navigation component from Material Design guidel
 ## Demo
 <img src="https://raw.githubusercontent.com/aurelhubert/ahbottomnavigation/master/demo1.gif" width="208" height="368" /> <img src="https://raw.githubusercontent.com/aurelhubert/ahbottomnavigation/master/demo2.gif" width="208" height="368" /> <img src="https://raw.githubusercontent.com/aurelhubert/ahbottomnavigation/master/demo3.gif" width="208" height="368" /> <img src="https://raw.githubusercontent.com/aurelhubert/ahbottomnavigation/master/demo4.gif" width="208" height="368" />
 
-## What's new (1.4.0) - [Changelog](https://github.com/aurelhubert/ahbottomnavigation/blob/master/CHANGELOG.md)
-* Added `isHidden()` method.
-* Added `setDefaultBackgroundResource(@DrawableRes int defaultBackgroundResource)`
-* Added optional selected item background (PR #132)
-* Displayed classic items for less than 3 items (PR #152)
+## What's new (1.5.0) - [Changelog](https://github.com/aurelhubert/ahbottomnavigation/blob/master/CHANGELOG.md)
+* Added AHNotification class to manage easily the style of each notification (PR #156) (**old method still works**)
+* Added `setForceTitlesHide(boolean forceTitlesHide)` to force the titles to be hidden (when 3 or less items are displayed)
+* Updated `buildToolsVersion` to version `24.0.2`
+* Updated `'com.android.support:design:24.2.1'`
+
 
 ## Features
 * Follow the bottom navigation guidelines (https://www.google.com/design/spec/components/bottom-navigation.html)
@@ -24,7 +25,7 @@ Library to implement the Bottom Navigation component from Material Design guidel
 ### Gradle
 ```groovy
 dependencies {
-    compile 'com.aurelhubert:ahbottomnavigation:1.4.0'
+    compile 'com.aurelhubert:ahbottomnavigation:1.5.0'
 }
 ```
 ### XML
@@ -81,6 +82,8 @@ bottomNavigation.setForceTint(true);
 
 // Force the titles to be displayed (against Material Design guidelines!)
 bottomNavigation.setForceTitlesDisplay(true);
+// Or force the titles to be hidden (against Material Design guidelines, too!)
+bottomNavigation.setForceTitlesHide(true);
 
 // Use colored navigation with circle reveal effect
 bottomNavigation.setColored(true);
@@ -92,8 +95,14 @@ bottomNavigation.setCurrentItem(1);
 bottomNavigation.setNotificationBackgroundColor(Color.parseColor("#F63D2B"));
 
 // Add or remove notification for each item
-bottomNavigation.setNotification("4", 1);
-bottomNavigation.setNotification("", 1);
+bottomNavigation.setNotification("1", 3);
+// OR
+AHNotification notification = new AHNotification.Builder()
+    .setText("1")
+    .setBackgroundColor(ContextCompat.getColor(DemoActivity.this, R.color.color_notification_back))
+    .setTextColor(ContextCompat.getColor(DemoActivity.this, R.color.color_notification_text))
+     .build();
+bottomNavigation.setNotification(notification, 1);
 
 // Set listeners
 bottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
